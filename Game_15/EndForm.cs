@@ -30,12 +30,19 @@ namespace Game_15
 
         private void EndForm_Load(object sender, EventArgs e)
         {
-            string fileName = "";
-            if (typeOfGame == 0) fileName = "\\123.txt";
-            if (typeOfGame == 1) fileName = "\\321.txt";
-            if (typeOfGame == 2) fileName = "\\222.txt";
             var names = new List<string>();
             var points = new List<string>();
+            GetLists(names, points);
+            for (int i = 0; i < names.Count; i++)
+                Table.Add(Int32.Parse(points[i]), names[i]);
+            pointer = Int32.Parse(points[names.Count - 1]);
+            pointer_name = names[names.Count - 1];
+            GridData();
+            SetSelection();
+        }
+        private void GetLists(List<string> names, List<string> points)
+        {
+            string fileName = GetFileName();
             using (System.IO.StreamReader file =
             new System.IO.StreamReader(Environment.CurrentDirectory + fileName, true))
             {
@@ -48,15 +55,20 @@ namespace Game_15
                     points.Add(buf[1]);
                 }
             }
-            for (int i = 0; i < names.Count; i++)
-                Table.Add(Int32.Parse(points[i]), names[i]);
-            pointer = Int32.Parse(points[names.Count - 1]);
-            pointer_name = names[names.Count - 1];
-            GridData();
+        }
+        private string GetFileName()
+        {
+            if (typeOfGame == 0) return "\\123.txt";
+            if (typeOfGame == 1) return "\\321.txt";
+            if (typeOfGame == 2) return "\\222.txt";
+            return "";
+        }
+        private void SetSelection()
+        {
             dataGridView1.ClearSelection();
             for (int i = 0; i < dataGridView1.RowCount; i++)
             {
-                if ((dataGridView1.Rows[i].Cells["name"].Value.ToString().Equals( pointer_name))
+                if ((dataGridView1.Rows[i].Cells["name"].Value.ToString().Equals(pointer_name))
                     && ((int)dataGridView1.Rows[i].Cells["points"].Value == pointer))
                 {
                     dataGridView1.Rows[i].Cells["name"].Selected = true;
@@ -66,17 +78,21 @@ namespace Game_15
         }
         private void GridData()
         {
-            var column1 = new DataGridViewColumn();
-            column1.HeaderText = "Имя";
-            column1.Name = "name";
-            column1.Width = 100;
-            column1.ReadOnly = true;
-            column1.CellTemplate = new DataGridViewTextBoxCell();
+            var column1 = new DataGridViewColumn
+            {
+                HeaderText = "Имя",
+                Name = "name",
+                Width = 100,
+                ReadOnly = true,
+                CellTemplate = new DataGridViewTextBoxCell()
+            };
 
-            var column2 = new DataGridViewColumn();
-            column2.HeaderText = "Время";
-            column2.Name = "points";
-            column2.CellTemplate = new DataGridViewTextBoxCell();
+            var column2 = new DataGridViewColumn
+            {
+                HeaderText = "Время",
+                Name = "points",
+                CellTemplate = new DataGridViewTextBoxCell()
+            };
 
             dataGridView1.Columns.Add(column1);
             dataGridView1.Columns.Add(column2);
@@ -92,7 +108,7 @@ namespace Game_15
     }
     class MyStack<T>
     {
-        private T[] arr = new T[100];
+        private readonly T[] arr = new T[100];
         public void Push(T val)
         {
             arr[Count++] = val;

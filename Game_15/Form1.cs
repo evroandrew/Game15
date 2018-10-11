@@ -33,12 +33,16 @@ namespace Game_15
             StartForm dlg = new StartForm();
             if (dlg.ShowDialog(this) == DialogResult.Cancel)
             {
-                Close();
-                return;
+                Close(); return;
             }
             name = dlg.name;
             typeOfGame = dlg.typeOfGame;
             game.GetTypeOfGame(typeOfGame);
+            CreateBtn();
+            timer.Start();
+        }
+        private void CreateBtn()
+        {
             for (int i = 0; i < 4; i++)
                 for (int j = 0; j < 4; j++)
                 {
@@ -57,16 +61,14 @@ namespace Game_15
                             }
                         }.Click += btnClick;
                 }
-            timer.Start();
         }
-
         private void btnClick(object sender, EventArgs e)
         {
             Button btn = sender as Button;
             if (btn == null || btn.Tag == null) return;
             int value = (int)btn.Tag;
-            int x = game.zeroX;
-            int y = game.zeroY;
+            int x = game.ZeroX;
+            int y = game.ZeroY;
             if (game.CheckAndGo(value))
             {
                 btn.Location = new Point
@@ -78,26 +80,30 @@ namespace Game_15
             if (game.IsWin())
             {
                 timer.Stop();
-                string fileName = "";
-                if (typeOfGame == 0) fileName = "\\123.txt";
-                if (typeOfGame == 1) fileName = "\\321.txt";
-                if (typeOfGame == 2) fileName = "\\222.txt";
-                FileInfo fi1 = new FileInfo(Environment.CurrentDirectory + fileName);
-                if (!fi1.Exists)
-                    using (StreamWriter sw = fi1.CreateText())
-                    {
-                        sw.Write($"{name}/{count / 1000}\\");
-                        sw.Close();
-                    }
-                else
-                    using (System.IO.StreamWriter file =
-            new System.IO.StreamWriter(Environment.CurrentDirectory + fileName, true))
-                    {
-                        file.Write($"{name}/{count / 1000}\\");
-                    }
+                WriteToFile();
                 EndForm dlg = new EndForm(typeOfGame);
                 dlg.Show();
             }
+        }
+        private void WriteToFile()
+        {
+            string fileName = "";
+            if (typeOfGame == 0) fileName = "\\123.txt";
+            if (typeOfGame == 1) fileName = "\\321.txt";
+            if (typeOfGame == 2) fileName = "\\222.txt";
+            FileInfo fi1 = new FileInfo(Environment.CurrentDirectory + fileName);
+            if (!fi1.Exists)
+                using (StreamWriter sw = fi1.CreateText())
+                {
+                    sw.Write($"{name}/{count / 1000}\\");
+                    sw.Close();
+                }
+            else
+                using (System.IO.StreamWriter file =
+        new System.IO.StreamWriter(Environment.CurrentDirectory + fileName, true))
+                {
+                    file.Write($"{name}/{count / 10}\\");
+                }
         }
         private void Timer_Tick(object sender, EventArgs e)
         {

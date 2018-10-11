@@ -10,9 +10,9 @@ namespace Game_15
     {
         private Random rnd = new Random();
         int typeOfGame = 0;
-        private int[,] _gameField = new int[4, 4];
-        public int zeroX { get; private set; }
-        public int zeroY { get; private set; }
+        private readonly int[,] _gameField = new int[4, 4];
+        public int ZeroX { get; private set; }
+        public int ZeroY { get; private set; }
         public void GetTypeOfGame(int gameType)
         { typeOfGame = gameType; }
         public bool IsWin()
@@ -20,68 +20,64 @@ namespace Game_15
             int[] arr = { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 0 };
             if (typeOfGame == 0)
             {
-                for (int i = 0; i < 4; i++)
-                    for (int j = 0; j < 4; j++)
-                        if (arr[i * 4 + j] != _gameField[j, i])
-                            return false;
-                return true;
+                return Check_game1(arr);
             }
             if (typeOfGame == 1)
             {
-                for (int i = 0; i < 4; i++)
-                    for (int j = 0; j < 4; j++)
-                        if (arr[i * 4 + j] != _gameField[i, j])
-                            return false;
-                return true;
+                return Check_game2(arr);
             }
             if (typeOfGame == 2)
             {
-                bool flag = true;
-                for (int i = 0; i < 4; i++)
-                    for (int j = 0; j < 4; j++)
-                        if (arr[i * 4 + j] != _gameField[j, i])
-                            flag = false;
-                if (flag == false)
-                {
-                    flag = true;
-                    for (int i = 0; i < 4; i++)
-                        for (int j = 0; j < 4; j++)
-                            if (arr[i * 4 + j] != _gameField[i, j])
-                                flag = false;
-                }
-                return flag;
+                if(Check_game1(arr))
+                    return true;
+                return Check_game2(arr);
             }
             return false;
         }
+        private bool Check_game1(int[] arr)
+        {
+            for (int i = 0; i < 4; i++)
+                for (int j = 0; j < 4; j++)
+                    if (arr[i * 4 + j] != _gameField[j, i])
+                        return false;
+            return true;
+        }
+        private bool Check_game2(int[] arr)
+        {
+            for (int i = 0; i < 4; i++)
+                for (int j = 0; j < 4; j++)
+                    if (arr[i * 4 + j] != _gameField[i, j])
+                        return false;
+            return true;
+        }
         public void zeroUp()
         {
-            if (zeroY == 3) return;
-            _gameField[zeroX, zeroY] = _gameField[zeroX, zeroY + 1];
-            ++zeroY;
-            _gameField[zeroX, zeroY] = 0;
+            if (ZeroY == 3) return;
+            _gameField[ZeroX, ZeroY] = _gameField[ZeroX, ZeroY + 1];
+            ++ZeroY;
+            _gameField[ZeroX, ZeroY] = 0;
 
         }
         public void zeroDown()
         {
-            if (zeroY == 0) return;
-
-            _gameField[zeroX, zeroY] = _gameField[zeroX, zeroY - 1];
-            --zeroY;
-            _gameField[zeroX, zeroY] = 0;
+            if (ZeroY == 0) return;
+            _gameField[ZeroX, ZeroY] = _gameField[ZeroX, ZeroY - 1];
+            --ZeroY;
+            _gameField[ZeroX, ZeroY] = 0;
         }
         public void zeroLeft()
         {
-            if (zeroX == 3) return;
-            _gameField[zeroX, zeroY] = _gameField[zeroX + 1, zeroY];
-            ++zeroX;
-            _gameField[zeroX, zeroY] = 0;
+            if (ZeroX == 3) return;
+            _gameField[ZeroX, ZeroY] = _gameField[ZeroX + 1, ZeroY];
+            ++ZeroX;
+            _gameField[ZeroX, ZeroY] = 0;
         }
         public void zeroRight()
         {
-            if (zeroX == 0) return;
-            _gameField[zeroX, zeroY] = _gameField[zeroX - 1, zeroY];
-            --zeroX;
-            _gameField[zeroX, zeroY] = 0;
+            if (ZeroX == 0) return;
+            _gameField[ZeroX, ZeroY] = _gameField[ZeroX - 1, ZeroY];
+            --ZeroX;
+            _gameField[ZeroX, ZeroY] = 0;
         }
         public GameLogic()
         {
@@ -90,8 +86,8 @@ namespace Game_15
         public void InitGame()
         {
             int[] arr = { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 0 };
-            Shuffle(arr);
-            check_it(arr);
+            //Shuffle(arr);
+            //Check_it(arr);
             for (int n = 0, i = 0; i < 4; ++i)
             {
                 for (int j = 0; j < 4; ++j, ++n)
@@ -99,8 +95,8 @@ namespace Game_15
                     _gameField[j, i] = arr[n];
                     if (arr[n] == 0)
                     {
-                        zeroX = j;
-                        zeroY = i;
+                        ZeroX = j;
+                        ZeroY = i;
                     }
                 }
             }
@@ -108,22 +104,22 @@ namespace Game_15
 
         public bool CheckAndGo(int value)
         {
-            if (zeroX > 0 && _gameField[zeroX - 1, zeroY] == value)
+            if (ZeroX > 0 && _gameField[ZeroX - 1, ZeroY] == value)
             {
                 zeroRight();
                 return true;
             }
-            if (zeroX < 3 && _gameField[zeroX + 1, zeroY] == value)
+            if (ZeroX < 3 && _gameField[ZeroX + 1, ZeroY] == value)
             {
                 zeroLeft();
                 return true;
             }
-            if (zeroY > 0 && _gameField[zeroX, zeroY - 1] == value)
+            if (ZeroY > 0 && _gameField[ZeroX, ZeroY - 1] == value)
             {
                 zeroDown();
                 return true;
             }
-            if (zeroY < 3 && _gameField[zeroX, zeroY + 1] == value)
+            if (ZeroY < 3 && _gameField[ZeroX, ZeroY + 1] == value)
             {
                 zeroUp();
                 return true;
@@ -131,9 +127,9 @@ namespace Game_15
             return false;
         }
 
-        private void check_it(int[] arr)
+        private void Check_it(int[] arr)
         {
-            int inv = inv_puzzle(arr);
+            int inv = Inv_puzzle(arr);
             if (typeOfGame == 0)
                 if (inv % 2 == 0)
                     return;
@@ -145,7 +141,7 @@ namespace Game_15
                 else
                     Shuffle(arr);
         }
-        private int inv_puzzle(int[] arr1)
+        private int Inv_puzzle(int[] arr1)
         {
             int inv = 0;
             for (int i = 0; i < 16; ++i)
