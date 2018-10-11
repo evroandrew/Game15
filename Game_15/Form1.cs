@@ -100,6 +100,9 @@ namespace Game_15
             }
         }
         private void Timer_Tick(object sender, EventArgs e)
-        { count += 100; }
+        {
+            count += 1;
+            label1.Text = ($"{(count / 36000):0#}:{(count % 3600 / 600):0#}:{(count % 600 / 10):0#}");
+        }
     }
 }
