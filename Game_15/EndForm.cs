@@ -144,13 +144,9 @@ namespace Game_15
         public void Add(KeyValuePair<TKey, TValue> pair)
         {
             if (root == null)
-            {
                 root = new TreeItem { Pair = pair };
-            }
             else
-            {
                 Add(pair, root);
-            }
         }
         private void Add(KeyValuePair<TKey, TValue> pair, TreeItem item)
         {
@@ -171,34 +167,6 @@ namespace Game_15
                     item.Right = new TreeItem { Pair = pair, Parent = item };
                 else
                     Add(pair, item.Right);
-            }
-        }
-        public void Print()
-        {
-            if (root == null)
-                Console.WriteLine("Tree is Empty!");
-            else
-            {
-                Print(root);
-            }
-        }
-        private void Print(TreeItem item)
-        {
-            if (item.Left != null)
-                Print(item.Left);
-            Console.Write($"[{item.Pair.Key}]={item.Pair.Value};");
-            if (item.Right != null)
-                Print(item.Right);
-        }
-
-        public void Print_s()
-        {
-            using (IEnumerator<TreeItem> en = GetTreeItemEnumerator(root))
-            {
-                while (en.MoveNext())
-                {
-                    Console.Write($"[{en.Current.Pair.Key}]={en.Current.Pair.Value};");
-                }
             }
         }
 

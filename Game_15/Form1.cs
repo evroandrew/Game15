@@ -36,8 +36,7 @@ namespace Game_15
                 Close(); return;
             }
             name = dlg.name;
-            typeOfGame = dlg.typeOfGame;
-            game.GetTypeOfGame(typeOfGame);
+            game.typeOfGame = typeOfGame = dlg.typeOfGame;
             CreateBtn();
             timer.Start();
         }

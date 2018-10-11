@@ -9,44 +9,62 @@ namespace Game_15
     class GameLogic
     {
         private Random rnd = new Random();
-        int typeOfGame = 0;
+        public int typeOfGame = 0;
         private readonly int[,] _gameField = new int[4, 4];
         public int ZeroX { get; private set; }
         public int ZeroY { get; private set; }
-        public void GetTypeOfGame(int gameType)
-        { typeOfGame = gameType; }
+        readonly int[] arr1 = { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 0 };
+        readonly int[] arr2 = { 13, 9, 5, 1, 14, 10, 6, 2, 15, 11, 7, 3, 0, 12, 8, 4 };
         public bool IsWin()
         {
-            int[] arr = { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 0 };
             if (typeOfGame == 0)
             {
-                return Check_game1(arr);
+                if (Check_game1()) return true;
+                return Check_game12();
             }
             if (typeOfGame == 1)
             {
-                return Check_game2(arr);
+                if (Check_game2()) return true;
+                return Check_game21();
             }
             if (typeOfGame == 2)
             {
-                if(Check_game1(arr))
-                    return true;
-                return Check_game2(arr);
+                if (Check_game1()) return true;
+                if (Check_game12()) return true;
+                if (Check_game2()) return true;
+                return Check_game21();
             }
             return false;
         }
-        private bool Check_game1(int[] arr)
+        private bool Check_game1()
         {
             for (int i = 0; i < 4; i++)
                 for (int j = 0; j < 4; j++)
-                    if (arr[i * 4 + j] != _gameField[j, i])
+                    if (arr1[i * 4 + j] != _gameField[j, i])
                         return false;
             return true;
         }
-        private bool Check_game2(int[] arr)
+        private bool Check_game12()
         {
             for (int i = 0; i < 4; i++)
                 for (int j = 0; j < 4; j++)
-                    if (arr[i * 4 + j] != _gameField[i, j])
+                    if (arr1[i * 4 + j] != _gameField[3-j, 3-i])
+                        return false;
+            return true;
+        }
+        private bool Check_game2()
+        {
+            for (int i = 0; i < 4; i++)
+                for (int j = 0; j < 4; j++)
+                    if (arr2[i * 4 + j] != _gameField[j, i])
+                        return false;
+            return true;
+        }
+        private bool Check_game21()
+        {
+            for (int i = 0; i < 4; i++)
+                for (int j = 0; j < 4; j++)
+                    if (arr2[i * 4 + j] != _gameField[3-j, 3-i])
                         return false;
             return true;
         }
@@ -86,8 +104,8 @@ namespace Game_15
         public void InitGame()
         {
             int[] arr = { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 0 };
-            //Shuffle(arr);
-            //Check_it(arr);
+            Shuffle(arr);
+            Check_it(arr);
             for (int n = 0, i = 0; i < 4; ++i)
             {
                 for (int j = 0; j < 4; ++j, ++n)
