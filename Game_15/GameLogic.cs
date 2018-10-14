@@ -13,14 +13,12 @@ namespace Game_15
         private readonly int[,] _gameField = new int[4, 4];
         public int ZeroX { get; private set; }
         public int ZeroY { get; private set; }
-        readonly int[] arr1 = { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 0 };
         readonly int[] arr2 = { 13, 9, 5, 1, 14, 10, 6, 2, 15, 11, 7, 3, 0, 12, 8, 4 };
         public bool IsWin()
         {
             if (typeOfGame == 0)
             {
-                if (Check_game1()) return true;
-                return Check_game12();
+                return Horizontal_check();
             }
             if (typeOfGame == 1)
             {
@@ -29,28 +27,53 @@ namespace Game_15
             }
             if (typeOfGame == 2)
             {
-                if (Check_game1()) return true;
-                if (Check_game12()) return true;
+                if (Horizontal_check()) return true;
                 if (Check_game2()) return true;
                 return Check_game21();
             }
             return false;
         }
-        private bool Check_game1()
+        private bool Horizontal_check()
         {
-            for (int i = 0; i < 4; i++)
-                for (int j = 0; j < 4; j++)
-                    if (arr1[i * 4 + j] != _gameField[j, i])
+            int tmp = 1;
+            bool flag = true;
+            for (int i = 0; i < 4 && flag; i++)
+                for (int j = 0; j < 4 && flag; j++)
+                {
+                    if (tmp == 16) tmp = 0;
+                    if (_gameField[j, i] != tmp++)
+                        flag = false;
+                }
+            if (flag) return true;
+            tmp = 1;
+            flag = true;
+            for (int i = 0; i < 4 && flag; i++)
+                for (int j = 3; j > 0 && flag; j--)
+                {
+                    if (tmp == 16) tmp = 0;
+                    if (_gameField[j, i] != tmp++)
+                        flag = false;
+                }
+            if (flag) return true;
+            tmp = 1;
+            flag = true;
+            for (int i = 3; i > 0 && flag; i--)
+                for (int j = 3; j > 0 && flag; j--)
+                {
+                    if (tmp == 16) tmp = 0;
+                    if (_gameField[j, i] != tmp++)
+                        flag = false;
+                }
+            if (flag) return true;
+            tmp = 1;
+            for (int i = 3; i > 0 && flag; i--)
+                for (int j = 0; j < 4 && flag; j++)
+                {
+                    if (tmp == 16) tmp = 0;
+                    if (_gameField[j, i] != tmp++)
                         return false;
-            return true;
-        }
-        private bool Check_game12()
-        {
-            for (int i = 0; i < 4; i++)
-                for (int j = 0; j < 4; j++)
-                    if (arr1[i * 4 + j] != _gameField[3-j, 3-i])
-                        return false;
-            return true;
+                }
+            return false;
         }
         private bool Check_game2()
         {
@@ -64,7 +87,7 @@ namespace Game_15
         {
             for (int i = 0; i < 4; i++)
                 for (int j = 0; j < 4; j++)
-                    if (arr2[i * 4 + j] != _gameField[3-j, 3-i])
+                    if (arr2[i * 4 + j] != _gameField[3 - j, 3 - i])
                         return false;
             return true;
         }
