@@ -37,8 +37,21 @@ namespace Game_15
             }
             name = dlg.name;
             game.typeOfGame = typeOfGame = dlg.typeOfGame;
+            SetupWrite();
             CreateBtn();
             timer.Start();
+        }
+        private void SetupWrite()
+        {
+            string fileName = "\\set.txt";
+            FileInfo fi1 = new FileInfo(Environment.CurrentDirectory + fileName);
+            if (!fi1.Exists)
+                using (StreamWriter sw = fi1.CreateText())
+                    sw.Write($"{name}/{typeOfGame}");
+            else
+                using (StreamWriter file =
+        new StreamWriter(Environment.CurrentDirectory + fileName))
+                    file.Write($"{name}/{typeOfGame}");
         }
         private void CreateBtn()
         {
@@ -94,7 +107,7 @@ namespace Game_15
             if (!fi1.Exists)
                 using (StreamWriter sw = fi1.CreateText())
                 {
-                    sw.Write($"{name}/{count / 1000}\\");
+                    sw.Write($"{name}/{count / 10}\\");
                     sw.Close();
                 }
             else

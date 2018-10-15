@@ -65,14 +65,14 @@ namespace Game_15
         }
         private void SetSelection()
         {
-            dataGridView1.ClearSelection();
-            for (int i = 0; i < dataGridView1.RowCount; i++)
+            dataGridView.ClearSelection();
+            for (int i = 0; i < dataGridView.RowCount; i++)
             {
-                if ((dataGridView1.Rows[i].Cells["name"].Value.ToString().Equals(pointer_name))
-                    && ((int)dataGridView1.Rows[i].Cells["points"].Value == pointer))
+                if ((dataGridView.Rows[i].Cells["name"].Value.ToString().Equals(pointer_name))
+                    && ((int)dataGridView.Rows[i].Cells["points"].Value == pointer))
                 {
-                    dataGridView1.Rows[i].Cells["name"].Selected = true;
-                    dataGridView1.Rows[i].Cells["points"].Selected = true;
+                    dataGridView.Rows[i].Cells["name"].Selected = true;
+                    dataGridView.Rows[i].Cells["points"].Selected = true;
                 }
             }
         }
@@ -94,14 +94,14 @@ namespace Game_15
                 CellTemplate = new DataGridViewTextBoxCell()
             };
 
-            dataGridView1.Columns.Add(column1);
-            dataGridView1.Columns.Add(column2);
+            dataGridView.Columns.Add(column1);
+            dataGridView.Columns.Add(column2);
             int i = 0;
             foreach (var t in Table)
             {
-                dataGridView1.Rows.Add();
-                dataGridView1["name", i].Value = t.Value;
-                dataGridView1["points", i].Value = t.Key;
+                dataGridView.Rows.Add();
+                dataGridView["name", i].Value = t.Value;
+                dataGridView["points", i].Value = t.Key;
                 i++;
             }
         }
